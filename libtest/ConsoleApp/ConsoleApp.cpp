@@ -3,9 +3,15 @@
 
 #include <iostream>
 
+#include "mylib.h"
+
 int main()
 {
     std::cout << "Hello World!\n";
+
+    MyLib* p = new MyLib();
+    p->testInLib();
+
 }
 
 // 运行程序: Ctrl + F5 或调试 >“开始执行(不调试)”菜单
