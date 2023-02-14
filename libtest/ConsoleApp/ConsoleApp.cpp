@@ -4,6 +4,7 @@
 #include <iostream>
 
 #include "mylib.h"
+#include "MyDLL1.h"
 
 int main()
 {
@@ -11,6 +12,10 @@ int main()
 
     MyLib* p = new MyLib();
     p->testInLib();
+
+    MyDLL1* q = new MyDLL1();
+    q->dllFun();
+
 
 }
 
