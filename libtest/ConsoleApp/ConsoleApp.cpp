@@ -2,9 +2,21 @@
 //
 
 #include <iostream>
+#include  <io.h>
+#include  <stdio.h>
+#include  <stdlib.h>
+#include <windows.h>
 
 #include "mylib.h"
 #include "MyDLL1.h"
+
+#include "OSUtils.h"
+#include "dllutils.h"
+#include "StringUtils.h"
+
+typedef void(__cdecl* MYPROC)();
+
+void dll2Func();
 
 int main()
 {
@@ -17,16 +29,48 @@ int main()
     q->dllFun();
 
 
+    dll2Func();
+
     std::cout << "main() Hello World! end\n";
 }
 
-// 运行程序: Ctrl + F5 或调试 >“开始执行(不调试)”菜单
-// 调试程序: F5 或调试 >“开始调试”菜单
+void dll2Func() {
+    std::wstring strExeDir = OSUtils::getExeDir();
+    
+    std::wstring myDll2Path = strExeDir + L"\\" + L"dll2.dll";
+    std::string myDll2PathA = StringUtils::WString2String(myDll2Path);
 
-// 入门使用技巧: 
-//   1. 使用解决方案资源管理器窗口添加/管理文件
-//   2. 使用团队资源管理器窗口连接到源代码管理
-//   3. 使用输出窗口查看生成输出和其他消息
-//   4. 使用错误列表窗口查看错误
-//   5. 转到“项目”>“添加新项”以创建新的代码文件，或转到“项目”>“添加现有项”以将现有代码文件添加到项目
-//   6. 将来，若要再次打开此项目，请转到“文件”>“打开”>“项目”并选择 .sln 文件
+    int result = _access(myDll2PathA.c_str(), 0);
+    if (result == -1) {
+        std::cout << "dll file not exist, 显示调用(Loadlibrary + GetProcAddress)成功失败 " << myDll2PathA << std::endl;
+        return ;
+    }
+
+    HMODULE hmodule = ::LoadLibraryEx(myDll2Path.c_str(), NULL, 0);
+    DWORD erroNumber = GetLastError();
+
+    BOOL loadSuccess = FALSE;
+
+    if (hmodule != NULL)
+    {
+        MYPROC pFunc = (MYPROC)GetProcAddress(hmodule, "dll2Func");
+        erroNumber = GetLastError();
+
+        // If the function address is valid, call the function.
+
+        if (NULL != pFunc)
+        {
+            loadSuccess = TRUE;
+            (pFunc)();
+        }
+        // Free the DLL module.
+
+        loadSuccess = FreeLibrary(hmodule);
+    }
+    if (loadSuccess) {
+        std::cout << "dll 显示调用(Loadlibrary + GetProcAddress)成功！" << std::endl;
+    }else {
+        std::cout << "dll 显示调用(Loadlibrary + GetProcAddress)成功失败" << std::endl;
+    }
+
+}

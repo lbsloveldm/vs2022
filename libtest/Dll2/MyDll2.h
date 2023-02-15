@@ -1,5 +1,8 @@
 #pragma once
-class MyDll2
-{
-};
+
+#include <iostream>
+#include <windows.h>
+
+
+__declspec(dllexport) void __cdecl  dll2Func();
 
