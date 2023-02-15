@@ -10,7 +10,6 @@
 
 void MyLib::testInLib()
 {
-	std::cout<<"¾²Ì¬¿â¼ÓÔØ£ºin library\n"<< std::endl;
-	printf("ssss");
+	std::cout<<"¾²Ì¬¿â¼ÓÔØ£ºin library"<< std::endl;
 }
 

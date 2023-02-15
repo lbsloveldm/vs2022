@@ -8,7 +8,7 @@
 
 int main()
 {
-    std::cout << "Hello World!\n";
+    std::cout << "main() Hello World! begin\n";
 
     MyLib* p = new MyLib();
     p->testInLib();
@@ -17,6 +17,7 @@ int main()
     q->dllFun();
 
 
+    std::cout << "main() Hello World! end\n";
 }
 
 // 运行程序: Ctrl + F5 或调试 >“开始执行(不调试)”菜单
